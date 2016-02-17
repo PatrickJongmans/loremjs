@@ -1,14 +1,9 @@
-var Lorem;
-(function() {
+	var Lorem = function() {
+	    this.type = null;
+	    this.query = null;
+	    this.data = null;
+	};
 
-    //Create a class named Lorem and constructor
-    Lorem = function() {
-        //Default values.
-        this.type = null;
-        this.query = null;
-        this.data = null;
-    };
-    //Static variables
     Lorem.IMAGE = 1;
     Lorem.TEXT = 2;
     Lorem.TYPE = {
@@ -92,50 +87,7 @@ var Lorem;
         lorem.push(this.createText(count, type));
         lorem = lorem.join(' ');
 
-        if (element) {
-            if (this.type == Lorem.TEXT)
-                element.innerHTML += lorem;
-            else if (this.type == Lorem.IMAGE) {
-                //TODO: for now, using lorempixum.
-                var path = '';
-                var options = this.query.split(' ');
-                if (options[0] == 'gray') {
-                    path += '/g';
-                    options[0] = '';
-                }
-                if (element.getAttribute('width'))
-                    path += '/' + element.getAttribute('width');
-
-                if (element.getAttribute('height'))
-                    path += '/' + element.getAttribute('height');
-
-                path += '/' + options.join(' ').replace(/(^\s+|\s+$)/, '');
-                element.src = 'http://lorempixum.com'+path.replace(/\/\//, '/');
-            }
-        }
-
-        if (element == null)
-            return lorem;
+        return lorem;
     };
 
-    //Register as jQuery
-    if (typeof jQuery != 'undefined') {
-        (function($) {
-            $.fn.lorem = function() {
-                $(this).each(function() {
-                    var lorem = new Lorem;
-                    lorem.type = $(this).is('img') ? Lorem.IMAGE : Lorem.TEXT;
-                    //data-lorem can be taken with data function (thanks to http://forrst.com/people/webking)
-                    lorem.query = $(this).data('lorem');
-                    lorem.createLorem(this);
-                })
-            };
-
-            //If developer run this javascript, then we can run the lorem.js
-            $(document).ready(function() {
-                $('[data-lorem]').lorem();
-            });
-        })(jQuery);
-    }
-
-})();
+module.exports = Lorem;
